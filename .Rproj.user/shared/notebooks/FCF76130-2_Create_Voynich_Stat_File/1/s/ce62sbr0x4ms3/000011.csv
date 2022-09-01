@@ -1,0 +1,182 @@
+"0",""
+"0",""
+"0",""
+"0","# Create Voynich statistics dataframe"
+"0","# Save the file as voystats.csv"
+"0",""
+"0",""
+"0","full.voy.max <- scan('Voynich_texts/Maximal/Full Voynich Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","full.voy.max.text <- scan('Voynich_texts/Maximal/Full Voynich Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","full.voy.max.simp <- scan('Voynich_texts/Maximal Simplified/Full Voynich Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","full.voy.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Full Voynich Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","full.voy.min <- scan('Voynich_texts/Minimal/Full Voynich Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","full.voy.min.text <- scan('Voynich_texts/Minimal/Full Voynich Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.max <- scan('Voynich_texts/Maximal/Voynich A Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.max.text <- scan('Voynich_texts/Maximal/Voynich A Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich A Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich A Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.min <- scan('Voynich_texts/Minimal/Voynich A Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.a.min.text <- scan('Voynich_texts/Minimal/Voynich A Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.max <- scan('Voynich_texts/Maximal/Voynich B Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.max.text <- scan('Voynich_texts/Maximal/Voynich B Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich B Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich B Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.min <- scan('Voynich_texts/Minimal/Voynich B Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.b.min.text <- scan('Voynich_texts/Minimal/Voynich B Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.max <- scan('Voynich_texts/Maximal/Voynich 1 Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.max.text <- scan('Voynich_texts/Maximal/Voynich 1 Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich 1 Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich 1 Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.min <- scan('Voynich_texts/Minimal/Voynich 1 Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.1.min.text <- scan('Voynich_texts/Minimal/Voynich 1 Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.max <- scan('Voynich_texts/Maximal/Voynich 2 Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.max.text <- scan('Voynich_texts/Maximal/Voynich 2 Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich 2 Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich 2 Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.min <- scan('Voynich_texts/Minimal/Voynich 2 Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.2.min.text <- scan('Voynich_texts/Minimal/Voynich 2 Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.max <- scan('Voynich_texts/Maximal/Voynich 3 Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.max.text <- scan('Voynich_texts/Maximal/Voynich 3 Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich 3 Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich 3 Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.min <- scan('Voynich_texts/Minimal/Voynich 3 Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.3.min.text <- scan('Voynich_texts/Minimal/Voynich 3 Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.max <- scan('Voynich_texts/Maximal/Voynich 4 Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.max.text <- scan('Voynich_texts/Maximal/Voynich 4 Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich 4 Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich 4 Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.min <- scan('Voynich_texts/Minimal/Voynich 4 Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.4.min.text <- scan('Voynich_texts/Minimal/Voynich 4 Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.max <- scan('Voynich_texts/Maximal/Voynich 5 Maximal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.max.text <- scan('Voynich_texts/Maximal/Voynich 5 Maximal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.max.simp <- scan('Voynich_texts/Maximal Simplified/Voynich 5 Maximal Simplified', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich 5 Maximal Simplified Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.min <- scan('Voynich_texts/Minimal/Voynich 5 Minimal', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voy.5.min.text <- scan('Voynich_texts/Minimal/Voynich 5 Minimal Text', what=""character"", sep=""\n"", comment.char = ""#"")"
+"2","Read 1 item
+"
+"0","voys <- c(full.voy.max, full.voy.max.text, full.voy.max.simp, full.voy.max.simp.text, full.voy.min, full.voy.min.text, voy.a.max, voy.a.max.text, voy.a.max.simp, voy.a.max.simp.text, voy.a.min, voy.a.min.text, voy.b.max, voy.b.max.text, voy.b.max.simp, voy.b.max.simp.text, voy.b.min, voy.b.min.text, voy.1.max, voy.1.max.text, voy.1.max.simp, voy.1.max.simp.text, voy.1.min, voy.1.min.text, voy.2.max, voy.2.max.text, voy.2.max.simp, voy.2.max.simp.text, voy.2.min, voy.2.min.text, voy.3.max, voy.3.max.text, voy.3.max.simp, voy.3.max.simp.text, voy.3.min, voy.3.min.text, voy.4.max, voy.4.max.text, voy.4.max.simp, voy.4.max.simp.text, voy.4.min, voy.4.min.text, voy.5.max, voy.5.max.text, voy.5.max.simp, voy.5.max.simp.text, voy.5.min, voy.5.min.text)"
+"0",""
+"0","langs <- c('Full Voynich Maximal', 'Full Voynich Maximal Text', 'Full Voynich Maximal Simplified', 'Full Voynich Maximal Simplified Text', 'Full Voynich Minimal', 'Full Voynich Minimal Text', 'Voynich A Maximal', 'Voynich A Maximal Text', 'Voynich A Maximal Simplified', 'Voynich A Maximal Simplified Text', 'Voynich A Minimal', 'Voynich A Minimal Text', 'Voynich B Maximal', 'Voynich B Maximal Text', 'Voynich B Maximal Simplified', 'Voynich B Maximal Simplified Text', 'Voynich B Minimal', 'Voynich B Minimal Text', 'Voynich 1 Maximal', 'Voynich 1 Maximal Text', 'Voynich 1 Maximal Simplified', 'Voynich 1 Maximal Simplified Text', 'Voynich 1 Minimal', 'Voynich 1 Minimal Text', 'Voynich 2 Maximal', 'Voynich 2 Maximal Text', 'Voynich 2 Maximal Simplified', 'Voynich 2 Maximal Simplified Text', 'Voynich 2 Minimal', 'Voynich 2 Minimal Text', 'Voynich 3 Maximal', 'Voynich 3 Maximal Text', 'Voynich 3 Maximal Simplified', 'Voynich 3 Maximal Simplified Text', 'Voynich 3 Minimal', 'Voynich 3 Minimal Text', 'Voynich 4 Maximal', 'Voynich 4 Maximal Text', 'Voynich 4 Maximal Simplified', 'Voynich 4 Maximal Simplified Text', 'Voynich 4 Minimal', 'Voynich 4 Minimal Text', 'Voynich 5 Maximal', 'Voynich 5 Maximal Text', 'Voynich 5 Maximal Simplified', 'Voynich 5 Maximal Simplified Text', 'Voynich 5 Minimal', 'Voynich 5 Minimal Text')"
+"0",""
+"0",""
+"0",""
+"0","codes <- c('voy.f.com', 'voy.f.com.text', 'voy.f', 'voy.f.text', 'voy.f.min', 'voy.f.min.text', 'voy.a.com', 'voy.a.com.text', 'voy.a', 'voy.a.text', 'voy.a.min', 'voy.a.min.text', 'voy.b.com', 'voy.b.com.text', 'voy.b', 'voy.b.text', 'voy.b.min', 'voy.b.min.text', 'voy.1.com', 'voy.1.com.text', 'voy.1', 'voy.1.text', 'voy.1.min', 'voy.1.min.text', 'voy.2.com', 'voy.2.com.text', 'voy.2', 'voy.2.text', 'voy.2.min', 'voy.2.min.text', 'voy.3.com', 'voy.3.com.text', 'voy.3', 'voy.3.text', 'voy.3.min', 'voy.3.min.text', 'voy.4.com', 'voy.4.com.text', 'voy.4', 'voy.4.text', 'voy.4.min', 'voy.4.min.text', 'voy.5.com', 'voy.5.com.text', 'voy.5', 'voy.5.text', 'voy.5.min', 'voy.5.min.text')"
+"0","fams <- rep('Voynich', 48)"
+"0","scripts <- rep('Voynich', 48)"
+"0",""
+"0","df <- data.frame()"
+"0",""
+"0","for (v in voys) {"
+"0","  doc <- v"
+"0","  "
+"0","  doc.df <- multi_stats(doc)"
+"0",""
+"0","  df <- rbind(df, doc.df)"
+"0",""
+"0","}"
+"0",""
+"0",""
+"0","df <- cbind(langs, codes, fams, scripts, df)"
+"0",""
+"0",""
+"0",""
+"0","# Save the file"
+"0",""
+"0","write.csv(df, file='Voynich_texts/voy_stats.csv', row.names=FALSE)"
+"0",""
+"0",""

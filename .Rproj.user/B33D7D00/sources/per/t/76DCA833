@@ -1,0 +1,26 @@
+{
+    "id": "76DCA833",
+    "path": "~/GitHub/R_Voynich_Stats/code/Generate_PIII_Texts.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "501711394",
+    "contents": "",
+    "dirty": false,
+    "created": 1662049651634.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "0,15",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1662049860,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1662049860457,
+    "read_only": false,
+    "read_only_alternatives": []
+}

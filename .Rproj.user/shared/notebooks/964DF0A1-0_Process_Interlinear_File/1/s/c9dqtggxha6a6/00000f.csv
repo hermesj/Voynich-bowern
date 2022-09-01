@@ -1,0 +1,5 @@
+"0","# Load the Voynich Interlinear 
+voynich.load <- scan('Voynich_texts/text16e6.evt', what=""character"", sep=""\n"", comment.char = ""#"")
+"
+"2","Read 17614 items
+"

@@ -1,0 +1,26 @@
+{
+    "id": "74E9BE89",
+    "path": "~/GitHub/Voynich-bowern/R code/2_Create_Voynich_Stat_File.Rmd",
+    "project_path": "R code/2_Create_Voynich_Stat_File.Rmd",
+    "type": "r_markdown",
+    "hash": "1556703026",
+    "contents": "",
+    "dirty": false,
+    "created": 1661677246471.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "1,4",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1662048416,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1662048416166,
+    "read_only": false,
+    "read_only_alternatives": []
+}
