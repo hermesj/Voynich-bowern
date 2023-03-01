@@ -2,12 +2,110 @@
 title: "Create_PIII_Ciphers"
 author: "Jürgen Hermes"
 date: "2023-02-25"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r echo=FALSE}
+rm(list=ls()) # Clear environment
+
+# Clear environment
+path_to_plaintexts <- 'Historical_ciphers/original/'
+path_to_goal <- 'Historical_ciphers/generated/'
+path_to_keys <- 'Historical_ciphers/keys/ciphers_poly_III_in_order.csv'
+
+# Custom Entropy functions: sumentropy, condbigram, condtrigram, rep.seqs
+# source('./Entropy_Functions.R')
+
+# Read PIII cipher table from file, initialize character mapping
+pIIIciphers = read.table(path_to_keys, sep=",", header = TRUE)
+pIIIciphers <- as.data.frame(apply(pIIIciphers,2,function(x)gsub('\\s+', '',x)))
+characterMapping <- data.frame(Chars = colnames(pIIIciphers), Numbers = (1:24))
+cat("Letters: ", ncol(pIIIciphers))
+cat("Synonyms: ", nrow(pIIIciphers))
+
+# Helper function
+is.integer0 <- function(x){
+  is.integer(x) && length(x) == 0L
+}
+
+# plain text with a lot of characters to replace 
+toEncipher <- scan(paste(path_to_plaintexts, 'melanchthon_confession.txt', sep=''), what="character", sep="\n", comment.char = "#")
+toEncipher = concatenate(toEncipher)
+toEncipher <- stringi::stri_trans_general(toEncipher, "de-ASCII; Latin-ASCII")
+toEncipher <- gsub(pattern="v", replacement = "u", toEncipher)
+toEncipher <- gsub(pattern="j", replacement = "i", toEncipher)
+toEncipher <- tolower(toEncipher)
+
+# Split of the plain text into its chars,  
+tESplits <- strsplit(toEncipher,"")[[1]]
+
+# Generate a cipher text by using all columns of PIII
+encoded_allC <- c()
+# encoding
+for(i in tESplits){
+  #print(i)
+  number = characterMapping$Numbers[characterMapping$Chars==i]
+  
+  if(is.integer0(number))
+    next
+  #print(number)
+  random = sample(1:131,1)
+  #print(random)
+  cipher <- pIIIciphers[random, number]
+  #print(cipher)
+  encoded_allC <- append(encoded_allC, cipher)
+}
+encoded_allC <- concatenate(encoded_allC)
+encoded_allC <- trimws(encoded_allC)
+
+# Generate a cipher text by using only 24 columns of PIII
+encoded_24C <- c()
+# encoding
+for(i in tESplits){
+  #print(i)
+  number = characterMapping$Numbers[characterMapping$Chars==i]
+  
+  if(is.integer0(number))
+    next
+  #print(number)
+  random = sample(1:24,1)
+  #print(random)
+  cipher <- pIIIciphers[random, number]
+  #print(cipher)
+  encoded_24C <- append(encoded_24C, cipher)
+}
+encoded_24C <- concatenate(encoded_24C)
+encoded_24C <- trimws(encoded_24C)
+
+# Generate a cipher text by using only 10 columns of PIII
+encoded_10C <- c()
+# encoding
+for(i in tESplits){
+  #print(i)
+  number = characterMapping$Numbers[characterMapping$Chars==i]
+  
+  if(is.integer0(number))
+    next
+  #print(number)
+  random = sample(1:10,1)
+  #print(random)
+  cipher <- pIIIciphers[random, number]
+  #print(cipher)
+  encoded_10C <- append(encoded_10C, cipher)
+}
+
+encoded_10C <- concatenate(encoded_10C)
+encoded_10C <- trimws(encoded_10C)
+
+write(encoded_10C, file = paste(path_to_goal, 'PIII_10_columns', sep=''), sep = "")
+write(encoded_24C, file = paste(path_to_goal, 'PIII_24_columns', sep=''), sep = "")
+write(encoded_allC, file = paste(path_to_goal, 'PIII_all_columns', sep=''), sep = "")
+
 ```
+
 
 ## R Markdown
 
