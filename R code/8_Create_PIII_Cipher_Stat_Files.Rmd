@@ -2,29 +2,67 @@
 title: "Create_PIII_Stat_Files"
 author: "Jürgen Hermes"
 date: "2023-02-25"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r echo=FALSE}
+rm(list=ls()) # Clear environment
+
+ # Custom Entropy functions: sumentropy, condbigram, condtrigram, rep.seqs
+source('./Entropy_Functions.R')
+
+# Packages
+library(ngram) # for ngrams
+library(ggplot2) # for plots
+library(stringdist) # ngram doesn't work with Hebrew characters, use 'qgrams'
+library(stringr)
+
+
+path_to_goal <- 'Historical_ciphers/generated/'
+
+
+pIII_10C <- scan(paste(path_to_goal, 'PIII_10_columns', sep=''), what="character", sep="\n", comment.char = "#")
+pIII_24C <- scan(paste(path_to_goal, 'PIII_24_columns', sep=''), what="character", sep="\n", comment.char = "#")
+pIII_allC <- scan(paste(path_to_goal, 'PIII_all_columns', sep=''), what="character", sep="\n", comment.char = "#")
+
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r echo=FALSE}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Create a dataframe of overall statistics about the files
 
-```{r cars}
-summary(cars)
+pIII.files <- c(pIII_10C,pIII_24C,pIII_allC)
+
+langs <-c('PIII Cipher 10 columns used', 'PIII Cipher 24 columns used', 'PIII Cipher 131 (all) columns used')
+
+codes <- c('pIII10c', 'pIII24c', 'pIII131c')
+
+fams <- c('Trithemian', 'Trithemian', 'Trithemian')
+
+scripts <- c('Latin', 'Latin', 'Latin')
+
+
+df <- data.frame()
+
+for (i in 1:length(pIII.files)) {
+  
+  print(paste(round(i/length(pIII.files)*100,2), '% complete', sep=''))
+  
+  doc <- pIII.files[i]
+  
+
+  doc.df <- multi_stats(doc)
+
+  df <- rbind(df, doc.df)
+}
+
+df <- cbind(langs, codes, fams, scripts, df)
+
+
+
+write.csv(df, file='Historical_ciphers/hist_stats.csv', row.names=FALSE)
+
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

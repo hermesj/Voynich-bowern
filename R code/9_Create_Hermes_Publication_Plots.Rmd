@@ -1,0 +1,93 @@
+---
+title: "Create Hermes Publication Plots"
+author: "Jürgen Hermes"
+date: "2023-03-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls()) # Clear environment
+
+### This is a function which goes through texts and deletes uncommon letters
+### The default threshold is .01%
+
+delete_uncommon_chars <- function (s, thresh = .0001) {
+  
+  char.table <- table(unlist(strsplit(s, "")))
+  char.rat.table <- char.table / sum(char.table)
+  s.del <- s
+  
+  for (c in names(char.rat.table)) {
+    if (char.rat.table[c] <= thresh) {
+      print(c)
+      s.del <- str_remove_all(s.del, c)
+    }
+  }
+  
+  return (s.del)
+}
+```
+
+## Purpose of this programming code
+
+This is the (now slightly improved) code I used for my publication "Polygraphia III: The cipher that pretends to be an artificial language", which I presented at the [International Voynich Conference 2022](https://www.um.edu.mt/event/voynich2022) and which is published here: https://ceur-ws.org/Vol-3313/
+
+## Examined Texts
+
+Specifically, various characteristics of different texts are examined:
+- The text of the Voynich Manuscript
+- Early modern texts in different languages
+- Texts encoded with the Polygraphia III method
+
+
+
+```{r cars}
+# Generate Hermes publication corpus
+pathToFiles <- "Historical_texts/hermes_pub/" 
+pathToCleanedFiles <- "Historical_texts/hermes_pub_clean/"
+pathToCiphers <- "Historical_ciphers/generated/"
+files <- list.files(pathToFiles)
+for(file in files){
+  aix <- scan(paste(pathToFiles, file, sep=''), what="character", sep="\n", comment.char = "#")
+  #print(aix)
+  aix.clean <- gsub('[^\x20-\x7E]', '', aix)
+  aix.clean <- tolower(aix.clean)
+  aix.clean <- gsub('\\[[0-9]*[a-z]\\]', '', aix.clean)
+  aix.clean <- gsub('[01«»\\(\\)\\?:;\\.,\\!\\*]', '', aix.clean)
+  aix.clean <- gsub('\\-', '', aix.clean)
+  aix.clean <- gsub(' {2,}', ' ', aix.clean)
+  aix.clean <- delete_uncommon_chars(aix.clean)
+  
+  aix.clean <- concatenate(aix.clean, collapse="")
+ 
+  write(aix.clean, file = paste(pathToCleanedFiles, file, sep=''), sep = "")
+}
+
+voy.full.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Full Voynich Maximal Simplified Text', what="character", sep="\n", comment.char = "#")
+voy.a.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich A Maximal Simplified Text', what="character", sep="\n", comment.char = "#")
+voy.b.max.simp.text <- scan('Voynich_texts/Maximal Simplified/Voynich B Maximal Simplified Text', what="character", sep="\n", comment.char = "#")
+hist.caesar.text <- scan(paste(pathToCleanedFiles,"caesar_de_bello_gallico.txt",sep=''), what="character", sep="\n", comment.char = "#")
+hist.dante.text <- scan(paste(pathToCleanedFiles,"dante_dc_inferno.txt",sep=''), what="character", sep="\n", comment.char = "#")
+hist.dee.text <- scan(paste(pathToCleanedFiles,"Dee_elements.txt",sep=''), what="character", sep="\n", comment.char = "#")
+hist.descartes.text <- scan(paste(pathToCleanedFiles,"descartes_meditationes.txt",sep=''), what="character", sep="\n", comment.char = "#")
+hist.melanchthon.text <- scan(paste(pathToCleanedFiles,"melanchthon_confession.txt",sep=''), what="character", sep="\n", comment.char = "#")
+hist.paracelsus.text <- scan(paste(pathToCleanedFiles,"paracelsus_paragranum.txt",sep=''), what="character", sep="\n", comment.char = "#")
+pIII.10columns <- scan(paste(pathToCiphers,"PIII_10_columns",sep=''), what="character", sep="\n", comment.char = "#")
+pIII.24columns <- scan(paste(pathToCiphers,"PIII_24_columns",sep=''), what="character", sep="\n", comment.char = "#")
+pIII.allcolumns <- scan(paste(pathToCiphers,"PIII_all_columns",sep=''), what="character", sep="\n", comment.char = "#")
+
+```
+
+## Examined Features
+
+The features under investigation are: 
+- The word length distribution of types and tokens
+- Different entropy values
+- The number of adjacency word repetitions and minimal pairs.
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
