@@ -1,19 +1,29 @@
-# Define the input string
-input_string <- "This is a sample string for counting word lengths, a is this."
+#### Suite for functions that are needed to perform the experiments of Hermes (2022)
+### Jürgen Hermes, March 2nd 2023
 
-# Convert the input string to lowercase and split it into words
-words <- tolower(strsplit(input_string, "\\W+")[[1]])
+source('./Entropy_Functions.R')
 
-# Count the frequency of word lengths for types
-word_length_types <- table(nchar(unique(words)))
+tokenLengthDistibutions <- function (s, remove.spaces = FALSE){
 
-# Count the frequency of word lengths for tokens
-word_length_tokens <- table(nchar(words))
+  # Convert the input string to lowercase and split it into words
+  words <- tolower(strsplit(s, "\\W+")[[1]])
 
-# Print the results
-cat("Word length distribution for types:\n")
-print(word_length_types)
-cat("Word length distribution for tokens:\n")
+  # Count the frequency of word lengths for tokens
+  word_length_tokens <- table(nchar(words))
+  cat("Word length distribution for tokens:\n")
+  print(word_length_tokens)
+  return(word_length_tokens)
+}
 
-
-print(word_length_tokens)
+typeLengthDistibutions <- function (s, remove.spaces = FALSE){
+ 
+  # Convert the input string to lowercase and split it into words
+  words <- tolower(strsplit(s, "\\W+")[[1]])
+  
+  # Count the frequency of word lengths for types
+  word_length_types <- table(nchar(unique(words)))
+  cat("Word length distribution for types:\n")
+  print(word_length_types)
+  plot(word_length_types)
+  return(word_length_types)
+}
