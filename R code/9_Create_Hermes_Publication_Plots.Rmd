@@ -9,8 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls()) # Clear environment
 
+source('./Entropy_Functions.R')
+source('./Additional_Functions.R')
 ### This is a function which goes through texts and deletes uncommon letters
 ### The default threshold is .01%
+library(Hmisc)
 
 delete_uncommon_chars <- function (s, thresh = .0001) {
   
@@ -77,6 +80,27 @@ pIII.10columns <- scan(paste(pathToCiphers,"PIII_10_columns",sep=''), what="char
 pIII.24columns <- scan(paste(pathToCiphers,"PIII_24_columns",sep=''), what="character", sep="\n", comment.char = "#")
 pIII.allcolumns <- scan(paste(pathToCiphers,"PIII_all_columns",sep=''), what="character", sep="\n", comment.char = "#")
 
+
+# Create a dataframe of overall statistics about the files
+
+investigated.texts <- c(voy.full.max.simp.text,voy.a.max.simp.text,voy.b.max.simp.text,
+                    hist.caesar.text,hist.dante.text,hist.dee.text,hist.descartes.text,hist.melanchthon.text,hist.paracelsus.text, 
+                    pIII.10columns,pIII.24columns,pIII.allcolumns)
+
+langs <-c('Full Voynich Maximal Simplified Text', 'Voynich A Maximal Simplified Text', 'Voynich A Maximal Simplified Text', 
+          'Caesar Bello Gallico', 'Dante Inferno', 'Dee Elements', 'Descartes Meditationes', 'Melanchthon Confession', 'Paracelsus Panagranum', 
+          'Polygraphia III small set', 'Polygraphia III medium set', 'Polygraphia III full set')
+
+codes <- c('voy.f.s.text', 'voy.a.s.text', 'voy.b.s.text', 
+           'caesar', 'dante', 'dee', 'descart', 'melanch', 'paracel', 
+           'p3.10c', 'p3.24c', 'p3.131c')
+
+fams <- c('Voynich','Voynich','Voynich',
+          'Latin', 'Italian', 'English', 'Latin', 'German', 'German', 
+          'Polygraphian','Polygraphian','Polygraphian')
+
+scripts <- c('Voynich','Voynich','Voynich','Latin','Latin','Latin','Latin','Latin','Latin','Cipher','Cipher','Cipher')
+
 ```
 
 ## Examined Features
@@ -87,7 +111,77 @@ The features under investigation are:
 - The number of adjacency word repetitions and minimal pairs.
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+completeStats <- data.frame()
+length <- c(1:20)
+counts <- rep(0, 20)
+
+repetitionStats <- data.frame()
+entropyStats <- data.frame()
+wordlengthStats <- data.frame()
+word_length_tokens_all <- data.frame(word_length = integer(), frequency = integer())
+
+
+for (v in investigated.texts) {
+  
+  doc <- v
+  
+  # Word length distributions 
+  word_length_tokens <- tokenLengthDistibutions(doc)
+  
+  word_length_types <- typeLengthDistibutions(doc)
+  print(word_length_tokens)
+  print(word_length_types)
+  
+  # Calculate the mean and standard deviation for types
+  mean_types <- sum(as.numeric(names(word_length_types)) * as.numeric(word_length_types)) / sum(as.numeric(word_length_types))
+  sd_types <- sqrt((sum(as.numeric(names(word_length_types))-mean_types)^2 / sum(as.numeric(word_length_types))))
+    
+  # Calculate the mean and standard deviation for tokens
+  mean_tokens <-  sum(as.numeric(names(word_length_tokens)) * as.numeric(word_length_tokens)) / sum(as.numeric(word_length_tokens))
+  sd_tokens <- sqrt((sum(as.numeric(names(word_length_tokens))-mean_tokens)^2 / sum(as.numeric(word_length_tokens))))
+  
+  sqrt(sum(noten_haeufigkeit * (noten - gew_mittelwert)^2) / sum(noten_haeufigkeit))
+  
+  print(names(word_length_tokens))
+  print(word_length_tokens)
+  product <- as.numeric(names(word_length_tokens)) * as.numeric(word_length_tokens)
+  print(product)
+  lengthStats <- data.frame(mean_types, sd_types, mean_tokens, sd_tokens)
+  wordlengthStats <-rbind(wordlengthStats, lengthStats)
+  
+  #Entropy values
+  entropies <- charEntropies(v)
+  entropyStats <- rbind(entropyStats,entropies)
+  
+  
+  #Adjazent repetitions / minimal pairs
+  minimalPairs <- list.rep.seqs(doc, dist=1, min.seq = 2, min.word = 4)
+  minimalTriplets <- list.rep.seqs(doc, dist=1, min.seq = 3, min.word = 4)
+  doubledWords <- list.rep.seqs(doc, dist=0, min.seq = 2, min.word = 4)
+  tripledWords <- list.rep.seqs(doc, dist=0, min.seq = 3, min.word = 4)
+  
+  
+  repcounts <- data.frame(doubledWords, tripledWords, minimalPairs, minimalTriplets) 
+  repetitionStats <- rbind(repetitionStats,repcounts)
+
+  #print(repcounts)
+  #doc.df <- multi_stats(doc)
+
+  #df <- rbind(df, doc.df)
+
+}
+
+# Plot the word length distributions for tokens for all texts
+#library(ggplot2)
+#ggplot(word_length_tokens_all, aes(x = word_length, y = frequency)) +
+#  geom_line() +
+#  labs(title = "Word Length Distributions for Tokens", x = "Word Length", y = "Frequency") +
+#  theme_bw()
+
+
+# Save the file
+df <-data.frame(langs, codes, fams, scripts,wordlengthStats,entropyStats,repetitionStats)
+write.csv(df, file='Historical_ciphers/hermes_stats.csv', row.names=FALSE)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
