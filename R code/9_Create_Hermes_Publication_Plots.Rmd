@@ -44,6 +44,13 @@ Specifically, various characteristics of different texts are examined:
 - Texts encoded with the Polygraphia III method
 
 
+## Examined Features
+
+The features under investigation are: 
+- The word length distribution of types and tokens
+- Different entropy values
+- The number of adjacency word repetitions and minimal pairs.
+
 
 ```{r cars}
 # Generate Hermes publication corpus
@@ -101,16 +108,7 @@ fams <- c('Voynich','Voynich','Voynich',
 
 scripts <- c('Voynich','Voynich','Voynich','Latin','Latin','Latin','Latin','Latin','Latin','Cipher','Cipher','Cipher')
 
-```
-
-## Examined Features
-
-The features under investigation are: 
-- The word length distribution of types and tokens
-- Different entropy values
-- The number of adjacency word repetitions and minimal pairs.
-
-```{r pressure, echo=FALSE}
+print
 completeStats <- data.frame()
 length <- c(1:20)
 counts <- rep(0, 20)
@@ -121,31 +119,37 @@ wordlengthStats <- data.frame()
 word_length_tokens_all <- data.frame(word_length = integer(), frequency = integer())
 
 
+word_length_types_all <- table(type_length = c(1:36), frequency = rep(0,36))
+
 for (v in investigated.texts) {
   
   doc <- v
   
   # Word length distributions 
   word_length_tokens <- tokenLengthDistibutions(doc)
+  word_length_tokens_df <- data.frame(word_length = as.numeric(names(word_length_tokens)), frequency = as.numeric(word_length_tokens))
+  
+  # Append the data frame to the all data frame
+  word_length_tokens_all <- merge(word_length_tokens_all, word_length_tokens_df, all=TRUE, by.x = "word_length", by.y="word_length")
   
   word_length_types <- typeLengthDistibutions(doc)
-  print(word_length_tokens)
-  print(word_length_types)
+  word_length_types_all <- merge(word_length_types_all, word_length_types, all = TRUE)
+  
+  #print(word_length_tokens)
+  #print(word_length_types)
   
   # Calculate the mean and standard deviation for types
   mean_types <- sum(as.numeric(names(word_length_types)) * as.numeric(word_length_types)) / sum(as.numeric(word_length_types))
   sd_types <- sqrt((sum(as.numeric(names(word_length_types))-mean_types)^2 / sum(as.numeric(word_length_types))))
+  word_length_types_all <- cbind()
     
   # Calculate the mean and standard deviation for tokens
   mean_tokens <-  sum(as.numeric(names(word_length_tokens)) * as.numeric(word_length_tokens)) / sum(as.numeric(word_length_tokens))
   sd_tokens <- sqrt((sum(as.numeric(names(word_length_tokens))-mean_tokens)^2 / sum(as.numeric(word_length_tokens))))
   
-  sqrt(sum(noten_haeufigkeit * (noten - gew_mittelwert)^2) / sum(noten_haeufigkeit))
-  
   print(names(word_length_tokens))
   print(word_length_tokens)
-  product <- as.numeric(names(word_length_tokens)) * as.numeric(word_length_tokens)
-  print(product)
+  
   lengthStats <- data.frame(mean_types, sd_types, mean_tokens, sd_tokens)
   wordlengthStats <-rbind(wordlengthStats, lengthStats)
   
@@ -164,13 +168,10 @@ for (v in investigated.texts) {
   repcounts <- data.frame(doubledWords, tripledWords, minimalPairs, minimalTriplets) 
   repetitionStats <- rbind(repetitionStats,repcounts)
 
-  #print(repcounts)
-  #doc.df <- multi_stats(doc)
-
-  #df <- rbind(df, doc.df)
-
 }
 
+
+#TODO: Plot word length distributions
 # Plot the word length distributions for tokens for all texts
 #library(ggplot2)
 #ggplot(word_length_tokens_all, aes(x = word_length, y = frequency)) +
@@ -180,7 +181,14 @@ for (v in investigated.texts) {
 
 
 # Save the file
+word_length_tokens_all <-  word_length_tokens_all[,-2]
+word_length_tokens_all <-t(word_length_tokens_all)
+rownames(word_length_tokens_all) <- langs
+names(word_length_tokens_all) <- (word_length_tokens_all[1,])
+word_length_tokens_all <- word_length_tokens_all[-1,]
+
 df <-data.frame(langs, codes, fams, scripts,wordlengthStats,entropyStats,repetitionStats)
+
 write.csv(df, file='Historical_ciphers/hermes_stats.csv', row.names=FALSE)
 ```
 
