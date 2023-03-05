@@ -87,9 +87,7 @@ pIII.10columns <- scan(paste(pathToCiphers,"PIII_10_columns",sep=''), what="char
 pIII.24columns <- scan(paste(pathToCiphers,"PIII_24_columns",sep=''), what="character", sep="\n", comment.char = "#")
 pIII.allcolumns <- scan(paste(pathToCiphers,"PIII_all_columns",sep=''), what="character", sep="\n", comment.char = "#")
 
-
-# Create a dataframe of overall statistics about the files
-
+# Some additional information on the texts under investigation
 investigated.texts <- c(voy.full.max.simp.text,voy.a.max.simp.text,voy.b.max.simp.text,
                     hist.caesar.text,hist.dante.text,hist.dee.text,hist.descartes.text,hist.melanchthon.text,hist.paracelsus.text, 
                     pIII.10columns,pIII.24columns,pIII.allcolumns)
@@ -110,87 +108,94 @@ scripts <- c('Voynich','Voynich','Voynich','Latin','Latin','Latin','Latin','Lati
 
 plotcolors <-c('green','palegreen','lawngreen',    'grey90','gray80','grey70','grey60','grey50','grey40',    'red','tomato','darkorange')
 
-print
-completeStats <- data.frame()
-length <- c(1:20)
-counts <- rep(0, 20)
 
+# Create a dataframe of overall statistics about the files to save them
+completeStats <- data.frame()
 repetitionStats <- data.frame()
 entropyStats <- data.frame()
 wordlengthStats <- data.frame()
+
+# Create dataframes to aggregate word length distributions to plot them
 word_length_tokens_all <- data.frame(word_length = integer(), frequency = integer())
+word_length_types_all <- data.frame(word_length = integer(), frequency = integer())
 
-
-word_length_types_all <- table(type_length = c(1:36), frequency = rep(0,36))
-
+# Textwise calculation of the features
 for (v in investigated.texts) {
-  
+ 
   doc <- v
   
-  # Word length distributions 
+  ## Word length distributions 
   word_length_tokens <- tokenLengthDistibutions(doc)
   word_length_tokens_df <- data.frame(word_length = as.numeric(names(word_length_tokens)), frequency = as.numeric(word_length_tokens))
-  
-  # Append the data frame to the all data frame
   word_length_tokens_all <- merge(word_length_tokens_all, word_length_tokens_df, all=TRUE, by.x = "word_length", by.y="word_length")
   
   word_length_types <- typeLengthDistibutions(doc)
-  word_length_types_all <- merge(word_length_types_all, word_length_types, all = TRUE)
+  word_length_types_df <- data.frame(word_length = as.numeric(names(word_length_types)), frequency = as.numeric(word_length_types))
+  word_length_types_all <- merge(word_length_types_all, word_length_types_df, all=TRUE, by.x = "word_length", by.y="word_length")
   
-  #print(word_length_tokens)
-  #print(word_length_types)
-  
-  # Calculate the mean and standard deviation for types
+  # Calculate the mean and standard deviation 
   mean_types <- sum(as.numeric(names(word_length_types)) * as.numeric(word_length_types)) / sum(as.numeric(word_length_types))
   sd_types <- sqrt((sum(as.numeric(names(word_length_types))-mean_types)^2 / sum(as.numeric(word_length_types))))
-  word_length_types_all <- cbind()
-    
-  # Calculate the mean and standard deviation for tokens
+  
   mean_tokens <-  sum(as.numeric(names(word_length_tokens)) * as.numeric(word_length_tokens)) / sum(as.numeric(word_length_tokens))
   sd_tokens <- sqrt((sum(as.numeric(names(word_length_tokens))-mean_tokens)^2 / sum(as.numeric(word_length_tokens))))
-  
-  print(names(word_length_tokens))
-  print(word_length_tokens)
   
   lengthStats <- data.frame(mean_types, sd_types, mean_tokens, sd_tokens)
   wordlengthStats <-rbind(wordlengthStats, lengthStats)
   
-  #Entropy values
+  
+  ## Entropy values
   entropies <- charEntropies(v)
   entropyStats <- rbind(entropyStats,entropies)
   
   
-  #Adjazent repetitions / minimal pairs
+  ## Repetitions / minimal pairs
   minimalPairs <- list.rep.seqs(doc, dist=1, min.seq = 2, min.word = 4)
   minimalTriplets <- list.rep.seqs(doc, dist=1, min.seq = 3, min.word = 4)
   doubledWords <- list.rep.seqs(doc, dist=0, min.seq = 2, min.word = 4)
   tripledWords <- list.rep.seqs(doc, dist=0, min.seq = 3, min.word = 4)
-  
   
   repcounts <- data.frame(doubledWords, tripledWords, minimalPairs, minimalTriplets) 
   repetitionStats <- rbind(repetitionStats,repcounts)
 
 }
 
-
-
+## Plot token and type length distributions
 word_length_tokens_all <-  word_length_tokens_all[,-2]
 word_length_tokens_all <-t(word_length_tokens_all)
 colnames(word_length_tokens_all) <- (word_length_tokens_all[1,])
 word_length_tokens_all <- word_length_tokens_all[-1,]
 rownames(word_length_tokens_all) <- codes
 word_length_tokens_all[is.na(word_length_tokens_all)]<-0
-# TODO: Relative values, type plots
-#str(word_length_tokens_all)
+row_sums <- rowSums(word_length_tokens_all)
+word_length_tokens_all <- word_length_tokens_all / row_sums;
 
-plot(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[1,], type = "l", col = "white")
+plot(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[1,], type = "l", col = "white", xlab="Token length", ylab="Relative frequency", xlim=c(1,20), ylim=c(0.0,0.5))
 
 for (i in seq(1, 12)) {
-  lines(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[i,], type = "l", col = plotcolors[i])
+  lines(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[i,], type = "l", col = plotcolors[i], lwd=2)
 }
+legend("topright", legend = langs, col= plotcolors, pch=1)
 
+word_length_types_all <-  word_length_types_all[,-2]
+word_length_types_all <-t(word_length_types_all)
+colnames(word_length_types_all) <- (word_length_types_all[1,])
+word_length_types_all <- word_length_types_all[-1,]
+rownames(word_length_types_all) <- codes
+word_length_types_all[is.na(word_length_types_all)]<-0
+row_sums_types <- rowSums(word_length_types_all)
+word_length_types_all <- word_length_types_all / row_sums_types;
+
+plot(x=as.numeric(colnames(word_length_types_all)), y=word_length_types_all[1,], type = "l", col = "white", xlab="Type length", ylab="Relative frequency", xlim=c(1,25), ylim=c(0.0,0.5))
+
+for (i in seq(1, 12)) {
+  lines(x=as.numeric(colnames(word_length_types_all)), y=word_length_types_all[i,], type = "l", col = plotcolors[i], lwd=2)
+}
+legend("topright", legend = langs, col= plotcolors, pch=1)
+
+
+# Export data
 df <-data.frame(langs, codes, fams, scripts,wordlengthStats,entropyStats,repetitionStats)
-
 write.csv(df, file='Historical_ciphers/hermes_stats.csv', row.names=FALSE)
 ```
 
