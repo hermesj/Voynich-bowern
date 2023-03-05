@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 rm(list=ls()) # Clear environment
 
 source('./Entropy_Functions.R')
@@ -108,6 +108,8 @@ fams <- c('Voynich','Voynich','Voynich',
 
 scripts <- c('Voynich','Voynich','Voynich','Latin','Latin','Latin','Latin','Latin','Latin','Cipher','Cipher','Cipher')
 
+plotcolors <-c('green','palegreen','lawngreen',    'grey90','gray80','grey70','grey60','grey50','grey40',    'red','tomato','darkorange')
+
 print
 completeStats <- data.frame()
 length <- c(1:20)
@@ -171,21 +173,21 @@ for (v in investigated.texts) {
 }
 
 
-#TODO: Plot word length distributions
-# Plot the word length distributions for tokens for all texts
-#library(ggplot2)
-#ggplot(word_length_tokens_all, aes(x = word_length, y = frequency)) +
-#  geom_line() +
-#  labs(title = "Word Length Distributions for Tokens", x = "Word Length", y = "Frequency") +
-#  theme_bw()
 
-
-# Save the file
 word_length_tokens_all <-  word_length_tokens_all[,-2]
 word_length_tokens_all <-t(word_length_tokens_all)
-rownames(word_length_tokens_all) <- langs
-names(word_length_tokens_all) <- (word_length_tokens_all[1,])
+colnames(word_length_tokens_all) <- (word_length_tokens_all[1,])
 word_length_tokens_all <- word_length_tokens_all[-1,]
+rownames(word_length_tokens_all) <- codes
+word_length_tokens_all[is.na(word_length_tokens_all)]<-0
+# TODO: Relative values, type plots
+#str(word_length_tokens_all)
+
+plot(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[1,], type = "l", col = "white")
+
+for (i in seq(1, 12)) {
+  lines(x=as.numeric(colnames(word_length_tokens_all)), y=word_length_tokens_all[i,], type = "l", col = plotcolors[i])
+}
 
 df <-data.frame(langs, codes, fams, scripts,wordlengthStats,entropyStats,repetitionStats)
 
