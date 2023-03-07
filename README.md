@@ -3,13 +3,26 @@
 This is an extension of Lindemann and Bowers' code project (see below) for comparing the text Voynich manuscript to other historical texts, taking into account different textual features. 
 
 The creation of a corpus with encrypted texts was added, the encryption method is the Polygraphia III method developed by Johannes Trithemius (1506).  
-
 In addition, the counting of word lengths, of word twins and of minimum pairs was added. 
 
-The results were presented at the International Conference on the Voynich Manuscript on 30 November 2023. The paper explaining these methods can be found here: Polygraphia III: The cipher that pretends to be an
-artificial language - https://ceur-ws.org/Vol-3313/paper7.pdf
+The results were presented at the International Conference on the Voynich Manuscript on 30 November 2023. 
 
 The Video with my conference talk can be found here: https://youtu.be/DsGjkGvaOsc
+
+The paper explaining these methods can be found here: Polygraphia III: The cipher that pretends to be an
+artificial language - https://ceur-ws.org/Vol-3313/paper7.pdf
+
+Abstract of the paper:
+This paper demonstrates the existence of a cipher method in the early modern period (Polygraphia III by
+Johannes Trithemius), which – applied as a random procedure – is able to produce a text that can mimic
+the oblique properties of the so-called Voynich Manuscript (VMS). This result is quite exciting since
+it brings back into play highly-debated approaches claiming the existence of hidden comprehensible
+information within the text of the VMS (which is often referred to as Voynichese). The paper briefly
+outlines some of the most salient and difficult-to-explain statistical properties of Voynichese, shows how
+Trithemius stepwise developed a cipher system whose application looks like an artificial language, points
+out how an application of this cipher generates a text that comes very close to the statistical properties
+of Voynichese and finally discusses possible starting points of cryptoanalytic attacks on a cipher that
+operates similar to the Polygraphia III encryption.
 
 If you want to re-create the corpora needed you have to run the R scripts 1, 2 and 7 from the R code folder. 
 R script 9 performs the experiments of my paper.
