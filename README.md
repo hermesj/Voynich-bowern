@@ -4,9 +4,10 @@ This is an extension of Lindemann and Bowers' code project (see below) for compa
 
 The creation of a corpus with encrypted texts was added, the encryption method is the Polygraphia III method developed by Johannes Trithemius (1506).  
 
-In addition, the counting of word lengths, of word twins and of minimum pairs was added. The results were presented at the International Conference on the Voynich Manuscript on 30 November 2023. The paper explaining these methods can be found here: Polygraphia III: The cipher that pretends to be an
-artificial language - https://ceur-ws.org/Vol-3313/paper7.pdf
+In addition, the counting of word lengths, of word twins and of minimum pairs was added. 
 
+The results were presented at the International Conference on the Voynich Manuscript on 30 November 2023. The paper explaining these methods can be found here: Polygraphia III: The cipher that pretends to be an
+artificial language - https://ceur-ws.org/Vol-3313/paper7.pdf
 The Video with my conference talk can be found here: https://youtu.be/DsGjkGvaOsc
 
 If you want to re-create the corpora needed you have to run the R scripts 1, 2 and 7 from the R code folder. 
